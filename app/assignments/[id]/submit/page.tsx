@@ -22,13 +22,13 @@ export default function SubmitAssignmentPage() {
       return { error: "Please select a file." };
     }
 
-    // Submission via store
     submitAssignment(id, {
       fileName: file.name,
       comment: comment
     });
 
-    router.push("/assignments");
+    // Return to the assignment detail page after submission
+    router.push(`/assignments/${id}`);
     return { success: true };
   }
 
@@ -42,6 +42,8 @@ export default function SubmitAssignmentPage() {
       {/* Breadcrumbs */}
       <nav className="text-sm text-stone-500">
         <Link href="/assignments" className="hover:underline">Assignments</Link>
+        <span className="mx-2">/</span>
+        <Link href={`/assignments/${id}`} className="hover:underline">{assignment.title}</Link>
         <span className="mx-2">/</span>
         <span className="text-stone-900 font-medium">Submit</span>
       </nav>
@@ -119,8 +121,9 @@ export default function SubmitAssignmentPage() {
             >
               {isPending ? "Submitting..." : "Submit Assignment"}
             </button>
+            {/* Cancel returns to the assignment detail page */}
             <Link 
-              href="/assignments" 
+              href={`/assignments/${id}`}
               className="px-8 py-4 bg-stone-100 text-stone-600 font-bold rounded-2xl hover:bg-stone-200 transition-all text-center"
             >
               Cancel
