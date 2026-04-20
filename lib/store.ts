@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Assignment,
-  initialAssignments,
-  Activity,
-  initialActivities,
-} from "./data";
+import { initialAssignments, initialActivities } from "./data";
 
 export function useAssignmentStore() {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -73,7 +68,6 @@ export function useAssignmentStore() {
       },
     });
 
-    // Remove old submission activity if it exists (for edits)
     const title = `Submitted: ${assignment.title}`;
     const filteredActivities = activities.filter((act) => act.title !== title);
 

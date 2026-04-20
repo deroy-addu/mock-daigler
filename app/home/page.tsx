@@ -1,4 +1,5 @@
-import React from "react";
+import HomeSVG from "@/assets/home.svg";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -13,20 +14,12 @@ export default function HomePage() {
       </div>
 
       <div className="bg-white p-12 rounded-3xl border border-stone-100 shadow-sm text-center">
-        <div className="w-20 h-20 bg-amber-50 text-[#F9A825] rounded-3xl flex items-center justify-center mx-auto mb-6">
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
+        <div className="w-20 h-20 bg-amber-50 text-amber-400 rounded-3xl flex items-center justify-center mx-auto mb-6">
+          <Image
+            src={HomeSVG}
+            alt="Home Icon"
+            width={50}
+          />
         </div>
         <h3 className="text-xl font-bold text-stone-800">
           Welcome to the University Portal

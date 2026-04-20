@@ -1,25 +1,3 @@
-export interface Activity {
-  id: number;
-  type: "grade" | "upload" | "submission";
-  title: string;
-  time: string;
-  detail: string;
-}
-
-export interface Assignment {
-  id: number;
-  title: string;
-  course: string;
-  due: string;
-  status: "Pending" | "In Progress" | "Not Started" | "Submitted";
-  description?: string;
-  submission?: {
-    fileName: string;
-    comment: string;
-    submittedAt: string;
-  };
-}
-
 export const initialAssignments: Assignment[] = [
   {
     id: 1,

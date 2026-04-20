@@ -37,8 +37,8 @@ export default function EditAssignmentPage() {
       comment: currentComment,
     });
 
-    // Return to the assignment detail page after saving
     router.push(`/assignments/${id}`);
+
     return { success: true };
   }
 
@@ -58,15 +58,19 @@ export default function EditAssignmentPage() {
     }
   };
 
-  if (loading) return <div className="p-8 text-stone-500">Loading...</div>;
-  if (!assignment)
+  if (loading) {
+    return <div className="p-8 text-stone-500">Loading...</div>;
+  }
+
+  if (!assignment) {
     return <div className="p-8 text-red-500">Assignment not found.</div>;
+  }
 
   if (assignment.status !== "Submitted") {
     return (
       <div className="p-8 text-center space-y-4">
         <p className="text-stone-600 font-medium">
-          This assignment hasn't been submitted yet.
+          This assignment hasn&apos;t been submitted yet.
         </p>
         <Link
           href={`/assignments/${id}`}
@@ -80,7 +84,6 @@ export default function EditAssignmentPage() {
 
   return (
     <div className="p-8 max-w-2xl mx-auto space-y-8">
-      {/* Breadcrumbs */}
       <nav className="text-sm text-stone-500">
         <Link
           href="/assignments"
@@ -98,7 +101,6 @@ export default function EditAssignmentPage() {
         <span className="mx-2">/</span>
         <span className="text-stone-900 font-medium">Edit Submission</span>
       </nav>
-
       <div className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm space-y-8">
         <div className="flex justify-between items-start">
           <div>
@@ -121,7 +123,6 @@ export default function EditAssignmentPage() {
           action={formAction}
           className="space-y-6"
         >
-          {/* Current File Info */}
           <div className="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-amber-500 shadow-sm">
@@ -164,8 +165,6 @@ export default function EditAssignmentPage() {
               }}
             />
           </div>
-
-          {/* Comment Area */}
           <div className="space-y-2">
             <label className="text-sm font-bold text-stone-800">
               Comment / Description
@@ -179,7 +178,6 @@ export default function EditAssignmentPage() {
               className="w-full p-4 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-100 focus:border-[#F9A825] transition-all text-sm resize-none"
             />
           </div>
-
           <div className="flex items-center space-x-4">
             <button
               type="submit"
@@ -188,7 +186,6 @@ export default function EditAssignmentPage() {
             >
               {isPending ? "Saving..." : "Save Changes"}
             </button>
-            {/* Cancel returns to the assignment detail page */}
             <Link
               href={`/assignments/${id}`}
               className="px-8 py-4 bg-stone-100 text-stone-600 font-bold rounded-2xl hover:bg-stone-200 transition-all text-center"
