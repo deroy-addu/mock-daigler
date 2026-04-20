@@ -1,36 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { useAssignmentStore } from "@/lib/store";
+import { initialCourses } from "@/lib/data";
 
 // --- Mock Data ---
 
-const courses = [
-  {
-    id: 1,
-    title: "Advanced Web Development",
-    instructor: "Dr. Sarah Miller",
-    progress: 75,
-    thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=300&q=80",
-    color: "bg-blue-500",
-  },
-  {
-    id: 2,
-    title: "Machine Learning Basics",
-    instructor: "Prof. Alan Turing",
-    progress: 40,
-    thumbnail: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=300&q=80",
-    color: "bg-purple-500",
-  },
-  {
-    id: 3,
-    title: "UI/UX Design Systems",
-    instructor: "Jane Cooper",
-    progress: 90,
-    thumbnail: "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=300&q=80",
-    color: "bg-pink-500",
-  },
-];
+const courses = initialCourses;
 
 const deadlines = [
   { id: 1, title: "Final Project Submission", course: "Advanced Web Dev", date: "Apr 12, 2026", priority: "High" },
@@ -117,8 +94,9 @@ export default function DashboardPage() {
             
             <div className="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
               {processedCourses.map((course) => (
-                <div 
+                <Link
                   key={course.id}
+                  href={`/course/${course.id}`}
                   className="min-w-[320px] bg-white rounded-3xl border border-stone-100 shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group cursor-pointer overflow-hidden"
                 >
                   <div className="h-40 overflow-hidden relative">
@@ -138,6 +116,12 @@ export default function DashboardPage() {
                     <h4 className="font-bold text-stone-800 text-lg leading-tight mb-4 group-hover:text-[#F9A825] transition-colors">
                       {course.title}
                     </h4>
+
+                    <div className="mb-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-xl border border-amber-100 bg-amber-50 text-[11px] font-bold text-amber-700 uppercase tracking-wide">
+                        View Course
+                      </span>
+                    </div>
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm mb-1">
@@ -152,7 +136,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
               {processedCourses.length === 0 && (
                 <div className="w-full py-12 text-center bg-stone-50 rounded-3xl border border-dashed border-stone-200">

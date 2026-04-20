@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAssignmentStore } from "@/lib/store";
 import { Assignment } from "@/lib/data";
 
@@ -21,6 +22,7 @@ function StatusBadge({ status }: { status: Assignment["status"] }) {
 }
 
 export default function AssignmentsPage() {
+  const router = useRouter();
   const { assignments, loading } = useAssignmentStore();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -130,11 +132,20 @@ export default function AssignmentsPage() {
             {processedAssignments.map((item) => (
               <tr
                 key={item.id}
-                className="hover:bg-stone-50 transition-colors group"
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push(`/assignments/${item.id}`)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    router.push(`/assignments/${item.id}`);
+                  }
+                }}
+                className="hover:bg-amber-100/60 transition-colors group cursor-pointer"
               >
                 {/* Clicking the title/description navigates to the detail page */}
                 <td className="px-8 py-6">
-                  <Link href={`/assignments/${item.id}`} className="block">
+                  <div className="block">
                     <div className="flex items-center space-x-3">
                       <span className="font-bold text-stone-800 group-hover:text-[#F9A825] transition-colors">
                         {item.title}
@@ -143,7 +154,7 @@ export default function AssignmentsPage() {
                     <p className="text-xs text-stone-400 mt-0.5 font-medium group-hover:text-stone-500 transition-colors">
                       Click to view details →
                     </p>
-                  </Link>
+                  </div>
                 </td>
                 <td className="px-8 py-6 text-stone-600 text-sm">{item.course}</td>
                 <td className="px-8 py-6 text-stone-500 text-sm font-medium">{item.due}</td>

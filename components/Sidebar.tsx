@@ -31,7 +31,9 @@ const Sidebar = () => {
       {/* Main Navigation */}
       <nav className="flex-1 px-4 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            pathname === item.href ||
+            (item.href === "/assignments" && (pathname.startsWith("/assignments/") || pathname.startsWith("/lessons/")));
           return (
             <Link
               key={item.name}
