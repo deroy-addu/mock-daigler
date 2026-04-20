@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useAssignmentStore } from "@/lib/store";
-import { Assignment } from "@/lib/data";
 
 function StatusBadge({ status }: { status: Assignment["status"] }) {
   const styles: Record<Assignment["status"], string> = {
