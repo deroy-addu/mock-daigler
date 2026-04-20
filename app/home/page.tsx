@@ -1,5 +1,5 @@
-import HomeSVG from "@/assets/home.svg";
 import Image from "next/image";
+import { HomeIcon } from "@/components/Icons";
 
 export default function HomePage() {
   return (
@@ -14,12 +14,9 @@ export default function HomePage() {
       </div>
 
       <div className="bg-white p-12 rounded-3xl border border-stone-100 shadow-sm text-center">
-        <div className="w-20 h-20 bg-amber-50 text-amber-400 rounded-3xl flex items-center justify-center mx-auto mb-6">
-          <Image
-            src={HomeSVG}
-            alt="Home Icon"
-            width={50}
-          />
+        {/* Removed text-amber-400 so it doesn't interfere with the HomeIcon colors */}
+        <div className="w-20 h-20 bg-stone-50 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-stone-50">
+          <HomeIcon size={56} />
         </div>
         <h3 className="text-xl font-bold text-stone-800">
           Welcome to the University Portal

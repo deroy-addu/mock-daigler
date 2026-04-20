@@ -10,6 +10,9 @@ import UploadSVG from "@/assets/upload.svg";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import { useAssignmentStore } from "@/lib/store";
+import { AnnouncementsIcon } from "@/components/Icons";
+import { ActivityIcon } from "@/components/Icons";
+import { DeadlineIcon } from "@/components/Icons";
 
 const courses: Course[] = [
   {
@@ -206,12 +209,8 @@ function AnnouncementWidget() {
     <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-stone-800">Announcements</h3>
-        <span className="bg-amber-50 text-amber-400 p-2 rounded-xl">
-          <Image
-            src={AnnouncementSVG}
-            alt="Announcement Icon"
-            width={20}
-          />
+        <span className="bg-stone-50 p-2 rounded-xl border border-stone-100">
+          <AnnouncementsIcon size={20} />
         </span>
       </div>
       <div className="space-y-4">
@@ -221,7 +220,7 @@ function AnnouncementWidget() {
             className="group cursor-pointer"
           >
             <div className="flex justify-between items-start mb-1">
-              <h4 className="text-sm font-bold text-stone-800 group-hover:text-[#F9A825] transition-colors">
+              <h4 className="text-sm font-bold text-stone-800 group-hover:text-amber-500 transition-colors">
                 {item.title}
               </h4>
               <span className="text-[10px] font-semibold text-stone-400 uppercase">
@@ -250,14 +249,12 @@ function RecentActivityWidget() {
     <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-stone-800">Recent Activity</h3>
-        <span className="bg-amber-50 text-[#F9A825] p-2 rounded-xl">
-          <Image
-            src={ActivitySVG}
-            alt="Activity Icon"
-            width={20}
-          />
+        {/* Updated: Neutral background to let the yellow bolt pop */}
+        <span className="bg-stone-50 p-2 rounded-xl border border-stone-100">
+          <ActivityIcon size={20} />
         </span>
       </div>
+      
       <div className="space-y-6">
         {activities.length > 0 ? (
           activities.map((activity) => (
@@ -266,12 +263,9 @@ function RecentActivityWidget() {
               className="flex space-x-4"
             >
               <div className="mt-1">
-                <div className="w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center text-stone-400">
-                  <Image
-                    src={activity.type === "grade" ? GradeSVG : UploadSVG}
-                    alt="Activity Icon"
-                    width={20}
-                  />
+                <div className="w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center">
+                  {/* Using the same themed icon for list items */}
+                  <ActivityIcon size={16} />
                 </div>
               </div>
               <div className="flex-1">
@@ -279,7 +273,7 @@ function RecentActivityWidget() {
                   <h4 className="text-sm font-bold text-stone-800">
                     {activity.title}
                   </h4>
-                  <span className="text-[10px] font-semibold text-stone-400">
+                  <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider">
                     {activity.time}
                   </span>
                 </div>
@@ -290,7 +284,7 @@ function RecentActivityWidget() {
             </div>
           ))
         ) : (
-          <p className="text-sm text-stone-400 text-center py-4">
+          <p className="text-sm text-stone-400 text-center py-4 italic">
             No recent activity.
           </p>
         )}
@@ -304,12 +298,9 @@ function DeadlinesWidget() {
     <section className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm sticky top-28">
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-xl font-bold text-stone-800">Deadlines</h3>
-        <div className="w-10 h-10 bg-amber-50 text-[#F9A825] rounded-2xl flex items-center justify-center">
-          <Image
-            src={CalendarSVG}
-            alt="Calendar Icon"
-            width={25}
-          />
+        {/* Updated: Swapped bg-amber-50 for stone-50 to match the new icon set */}
+        <div className="w-10 h-10 bg-stone-50 rounded-2xl flex items-center justify-center border border-stone-100">
+          <DeadlineIcon size={24} />
         </div>
       </div>
 
@@ -332,18 +323,15 @@ function DeadlinesWidget() {
               <div className="w-0.5 flex-1 bg-stone-100 mt-2 group-last:hidden" />
             </div>
             <div className="flex-1 pb-6 group-last:pb-0 border-b border-stone-50 group-last:border-none">
-              <h4 className="text-sm font-bold text-stone-800 group-hover:text-[#F9A825] transition-colors">
+              <h4 className="text-sm font-bold text-stone-800 group-hover:text-amber-500 transition-colors">
                 {deadline.title}
               </h4>
               <p className="text-xs text-stone-400 mt-1 font-medium">
                 {deadline.course}
               </p>
               <div className="flex items-center mt-3 text-[11px] font-bold text-stone-500 uppercase tracking-wider">
-                <Image
-                  src={ClockSVG}
-                  alt="Clock Icon"
-                  width={15}
-                />
+                {/* Updated: Mini version of the DeadlineIcon for the timeline */}
+                <DeadlineIcon size={14} />
                 <span className="ml-1.5">{deadline.date}</span>
               </div>
             </div>
@@ -351,7 +339,7 @@ function DeadlinesWidget() {
         ))}
       </div>
 
-      <button className="w-full mt-8 py-4 bg-[#F9A825] text-white font-bold rounded-2xl shadow-lg shadow-amber-100 hover:bg-[#D97706] hover:-translate-y-0.5 transition-all duration-300">
+      <button className="w-full mt-8 py-4 bg-amber-500 text-white font-bold rounded-2xl shadow-lg shadow-stone-100 hover:bg-amber-600 hover:-translate-y-0.5 transition-all duration-300">
         View All Deadlines
       </button>
     </section>
