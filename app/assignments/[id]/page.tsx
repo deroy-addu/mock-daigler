@@ -4,64 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useAssignmentStore } from "../../../lib/store";
-
-//Types
-
-type Status = "Pending" | "In Progress" | "Not Started" | "Submitted";
-
-interface AssignmentDetail {
-  description: string;
-  instructions: string[];
-  points: number;
-  submissionType: string;
-}
-
-//Static detail data
-
-const assignmentDetails: Record<number, AssignmentDetail> = {
-  1: {
-    description:
-      "In this assignment, you will dive deep into React's component architecture by building a fully functional multi-step form using advanced component patterns including compound components, render props, and custom hooks.",
-    instructions: [
-      "Create a reusable multi-step form component using the compound component pattern.",
-      "Implement at least three custom hooks: useFormState, useStepNavigation, and useFormValidation.",
-      "Use React Context to share form state across nested components without prop drilling.",
-      "Add animated transitions between steps using CSS transitions or Framer Motion.",
-      "Write unit tests for each custom hook using React Testing Library.",
-      "Document your component API using JSDoc comments and include a usage example in the README.",
-    ],
-    points: 100,
-    submissionType: "ZIP file (source code + README)",
-  },
-  2: {
-    description:
-      "Explore the foundational architectures of neural networks by implementing a feedforward network from scratch in Python, then comparing its performance against a modern deep learning framework implementation.",
-    instructions: [
-      "Implement a feedforward neural network from scratch using only NumPy — no ML libraries for the core logic.",
-      "Your network must support configurable hidden layers, activation functions (ReLU, Sigmoid, Tanh), and learning rates.",
-      "Train on the MNIST dataset and achieve at least 92% test accuracy.",
-      "Re-implement the same architecture using PyTorch or TensorFlow and compare training curves.",
-      "Write a 2–3 page report analyzing the performance difference, including loss/accuracy graphs.",
-      "Submit a Jupyter notebook with clear markdown explanations for each section.",
-    ],
-    points: 120,
-    submissionType: "Jupyter Notebook (.ipynb) + PDF Report",
-  },
-  3: {
-    description:
-      "Design and document a comprehensive design system from first principles. You will establish visual tokens, component specifications, and usage guidelines that could serve as the foundation for a real product.",
-    instructions: [
-      "Define a complete set of design tokens: color palette (with semantic aliases), typography scale, spacing system, border radii, and shadow levels.",
-      "Document at least 10 reusable UI components with variants, states, and accessibility notes.",
-      "Create a component library in Figma (or a tool of your choice) and export design specs.",
-      "Write a contribution guide explaining how future designers should extend the system.",
-      "Include a dark mode specification for each token and component.",
-      "Present your system in a 5-minute recorded walkthrough — upload the video link in your submission.",
-    ],
-    points: 80,
-    submissionType: "Figma link + PDF Documentation + Video link",
-  },
-};
+import type { Assignment } from "../../../lib/data";
 
 //Shared icons
 
@@ -120,8 +63,8 @@ const UploadIcon = () => (
 
 //Sub-components
 
-function StatusBadge({ status }: { status: Status }) {
-  const styles: Record<Status, string> = {
+function StatusBadge({ status }: { status: Assignment["status"] }) {
+  const styles: Record<Assignment["status"], string> = {
     Submitted: "bg-emerald-100 text-emerald-700",
     Pending: "bg-amber-100 text-amber-700",
     "In Progress": "bg-blue-100 text-blue-700",
@@ -382,7 +325,6 @@ export default function AssignmentDetailPage() {
   const id = Number(params.id);
   const { assignments, loading, removeSubmission } = useAssignmentStore();
   const assignment = assignments.find((a) => a.id === id);
-  const details = assignmentDetails[id];
 
   const [activePanel, setActivePanel] = useState<"submit" | "edit" | null>(
     null,
@@ -560,7 +502,7 @@ export default function AssignmentDetailPage() {
               </span>
             </div>
 
-            {details && (
+            {assignment.instructions && (
               <>
                 {/* Points */}
                 <div className="flex items-center space-x-2 bg-stone-50 border border-stone-100 px-4 py-2 rounded-xl">
@@ -577,7 +519,7 @@ export default function AssignmentDetailPage() {
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
                   <span className="text-xs font-bold text-stone-600">
-                    {details.points} pts
+                    {assignment.points} pts
                   </span>
                 </div>
 
@@ -603,7 +545,7 @@ export default function AssignmentDetailPage() {
                     />
                   </svg>
                   <span className="text-xs font-bold text-stone-600">
-                    {details.submissionType}
+                    {assignment.submissionType}
                   </span>
                 </div>
 
@@ -678,14 +620,14 @@ export default function AssignmentDetailPage() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         {/* Left: description & instructions */}
         <div className="xl:col-span-2">
-          {details ? (
+          {assignment.instructions ? (
             <section className="bg-white rounded-3xl border border-stone-100 shadow-sm p-8 space-y-8">
               <div className="space-y-3">
                 <h2 className="text-xs font-bold text-stone-400 uppercase tracking-widest">
                   Description
                 </h2>
                 <p className="text-stone-700 leading-relaxed">
-                  {details.description}
+                  {assignment.description}
                 </p>
               </div>
 
@@ -696,7 +638,7 @@ export default function AssignmentDetailPage() {
                   Instructions
                 </h2>
                 <ol className="space-y-5">
-                  {details.instructions.map((step, i) => (
+                  {assignment.instructions.map((step: string, i: number) => (
                     <li
                       key={i}
                       className="flex space-x-4"
