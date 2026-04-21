@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAssignmentStore } from "../../../../lib/store";
 import Link from "next/link";
@@ -12,18 +12,24 @@ export default function SubmitAssignmentPage() {
   const { assignments, loading, submitAssignment } = useAssignmentStore();
   const assignment = assignments.find((a) => a.id === id);
 
-  const [selectedFileName, setSelectedFileName] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState<{ name: string; type: string }[]>([]);
+
+  // Redirect if already submitted
+  useEffect(() => {
+    if (!loading && assignment && assignment.status === "Submitted") {
+      router.replace(`/assignments/${id}/edit`);
+    }
+  }, [loading, assignment, id, router]);
 
   async function handleFormSubmit(prevState: any, formData: FormData) {
-    const file = formData.get("file") as File;
     const comment = formData.get("comment") as string;
 
-    if (!file || file.name === "") {
-      return { error: "Please select a file." };
+    if (selectedFiles.length === 0) {
+      return { error: "Please select at least one file." };
     }
 
     submitAssignment(id, {
-      fileName: file.name,
+      files: selectedFiles,
       comment: comment,
     });
 
@@ -75,6 +81,8 @@ export default function SubmitAssignmentPage() {
             className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
               assignment.status === "Submitted"
                 ? "bg-emerald-100 text-emerald-700"
+                  : assignment.status === "On Progress"
+                  ? "bg-blue-100 text-blue-700"
                 : "bg-amber-100 text-amber-700"
             }`}
           >
@@ -93,7 +101,7 @@ export default function SubmitAssignmentPage() {
             </label>
             <div
               className={`border-2 border-dashed rounded-2xl p-8 text-center transition-colors ${
-                selectedFileName
+                selectedFiles.length > 0
                   ? "border-amber-200 bg-amber-50"
                   : "border-stone-100 hover:border-amber-200"
               }`}
@@ -103,9 +111,12 @@ export default function SubmitAssignmentPage() {
                 name="file"
                 className="hidden"
                 id="file-upload"
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  setSelectedFileName(file ? file.name : "");
+                  const files = e.target.files;
+                  if (files) {
+                    setSelectedFiles(Array.from(files).map(f => ({ name: f.name, type: f.type || "File" })));
+                  }
                 }}
               />
               <label
@@ -114,7 +125,7 @@ export default function SubmitAssignmentPage() {
               >
                 <div className="flex flex-col items-center">
                   <div className="w-12 h-12 bg-amber-50 text-[#F9A825] rounded-2xl flex items-center justify-center mb-4">
-                    {selectedFileName ? (
+                    {selectedFiles.length > 0 ? (
                       <svg
                         width="24"
                         height="24"
@@ -151,13 +162,13 @@ export default function SubmitAssignmentPage() {
                     )}
                   </div>
                   <p className="text-sm font-bold text-stone-800 max-w-xs truncate px-4">
-                    {selectedFileName
-                      ? selectedFileName
+                    {selectedFiles.length > 0
+                      ? `${selectedFiles.length} file(s) selected`
                       : "Click to browse or drag & drop"}
                   </p>
                   <p className="text-xs text-stone-400 mt-1">
-                    {selectedFileName
-                      ? "Click to change file"
+                    {selectedFiles.length > 0
+                      ? "Click to change selection"
                       : "PDF, ZIP, or DOCX (Max 20MB)"}
                   </p>
                 </div>
@@ -185,7 +196,7 @@ export default function SubmitAssignmentPage() {
           <div className="flex items-center space-x-4">
             <button
               type="submit"
-              disabled={!selectedFileName || isPending}
+              disabled={selectedFiles.length === 0 || isPending}
               className="flex-1 py-4 bg-[#F9A825] text-white font-bold rounded-2xl shadow-lg shadow-amber-100 hover:bg-[#D97706] hover:-translate-y-0.5 disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none transition-all duration-300"
             >
               {isPending ? "Submitting..." : "Submit Assignment"}

@@ -50,7 +50,7 @@ export default function Sidebar() {
 
       <nav className="flex-1 px-4 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname.startsWith(item.href);
           const renderedIcon = item.icon 
             ? React.cloneElement(item.icon as React.ReactElement<{ active: boolean }>, { active: isActive })
             : null;
@@ -95,7 +95,7 @@ export default function Sidebar() {
           {isActivitiesOpen && (
             <div className="mt-2 space-y-1 px-2">
               {myActivities.map((activity) => {
-                const isActive = pathname === activity.href;
+                const isActive = pathname.startsWith(activity.href);
                 return (
                   <Link
                     key={activity.name}

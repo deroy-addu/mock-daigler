@@ -19,7 +19,7 @@ export default function EditAssignmentPage() {
   useEffect(() => {
     if (assignment?.submission) {
       setComment(assignment.submission.comment);
-      setNewFileName(assignment.submission.fileName);
+      setNewFileName(assignment.submission.files?.[0]?.name || "");
     }
   }, [assignment]);
 
@@ -27,13 +27,13 @@ export default function EditAssignmentPage() {
     const currentComment = formData.get("comment") as string;
     const file = formData.get("file") as File;
 
-    const fileName =
-      file && file.name !== ""
-        ? file.name
-        : assignment?.submission?.fileName || "existing-file.pdf";
+    const files =
+      file && file.name !== "" 
+        ? [{ name: file.name, type: file.type || "File" }] 
+        : assignment?.submission?.files || [];
 
     submitAssignment(id, {
-      fileName: fileName,
+      files: files,
       comment: currentComment,
     });
 

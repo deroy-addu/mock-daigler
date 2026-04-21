@@ -8,84 +8,15 @@ import GradeSVG from "@/assets/grade.svg";
 import SearchSVG from "@/assets/search.svg";
 import UploadSVG from "@/assets/upload.svg";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useMemo } from "react";
 import { useAssignmentStore } from "@/lib/store";
 import { AnnouncementsIcon } from "@/components/Icons";
 import { ActivityIcon } from "@/components/Icons";
-import { DeadlineIcon } from "@/components/Icons";
+import { DeadlineIcon, ClockIcon as DueDateIcon } from "@/components/Icons";
+import { initialCourses as courses } from "@/lib/data";
 
-const courses: Course[] = [
-  {
-    id: 1,
-    title: "Advanced Web Development",
-    instructor: "Dr. Sarah Miller",
-    progress: 75,
-    thumbnail:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=300&q=80",
-    color: "bg-blue-500",
-  },
-  {
-    id: 2,
-    title: "Machine Learning Basics",
-    instructor: "Prof. Alan Turing",
-    progress: 40,
-    thumbnail:
-      "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=300&q=80",
-    color: "bg-purple-500",
-  },
-  {
-    id: 3,
-    title: "UI/UX Design Systems",
-    instructor: "Jane Cooper",
-    progress: 90,
-    thumbnail:
-      "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=300&q=80",
-    color: "bg-pink-500",
-  },
-];
-
-const deadlines: Deadline[] = [
-  {
-    id: 1,
-    title: "Final Project Submission",
-    course: "Advanced Web Dev",
-    date: "Apr 12, 2026",
-    priority: "High",
-  },
-  {
-    id: 2,
-    title: "Quiz 4: Neural Networks",
-    course: "Machine Learning",
-    date: "Apr 15, 2026",
-    priority: "Medium",
-  },
-  {
-    id: 3,
-    title: "Design Critique",
-    course: "UI/UX Design",
-    date: "Apr 18, 2026",
-    priority: "Low",
-  },
-];
-
-const announcements: Announcement[] = [
-  {
-    id: 1,
-    title: "Easter Break Schedule",
-    date: "2 hours ago",
-    author: "Academic Office",
-    content: "The university will be closed from Friday to Monday...",
-  },
-  {
-    id: 2,
-    title: "New Library Resources",
-    date: "1 day ago",
-    author: "Academic Office",
-    content: "Access to IEEE Xplore is now available for all students...",
-  },
-];
-
-function DashboardCourseItem({ course }: { course: Course }) {
+function DashboardCourseItem({ course }: { course: any }) {
   return (
     <div
       key={course.id}
@@ -129,12 +60,12 @@ function DashboardCourseItem({ course }: { course: Course }) {
   );
 }
 
-function DashboardCourseOverview() {
+function DashboardCourseOverview({ courses }: { courses: any[] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("title");
 
   const processedCourses = useMemo(() => {
-    return [...courses]
+    return Array.isArray(courses) ? [...courses]
       .filter(
         (course) =>
           course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -151,8 +82,8 @@ function DashboardCourseOverview() {
           default:
             return 0;
         }
-      });
-  }, [searchQuery, sortBy]);
+      }) : [];
+  }, [courses, searchQuery, sortBy]);
 
   return (
     <section>
@@ -214,15 +145,15 @@ function DashboardCourseOverview() {
 function DashboardAnnouncementItem({
   announcement,
 }: {
-  announcement: Announcement;
+  announcement: any;
 }) {
   return (
-    <div
-      key={announcement.id}
-      className="group cursor-pointer"
+    <Link
+      href={`/announcements/post?id=${announcement.id}`}
+      className="block group cursor-pointer"
     >
       <div className="flex justify-between items-start mb-1">
-        <h4 className="text-sm font-bold text-stone-800 group-hover:text-[#F9A825] transition-colors">
+        <h4 className="text-sm font-bold text-stone-800 group-hover:text-amber-500 transition-colors">
           {announcement.title}
         </h4>
         <span className="text-[10px] font-semibold text-stone-400 uppercase">
@@ -233,11 +164,11 @@ function DashboardAnnouncementItem({
         {announcement.content}
       </p>
       <div className="mt-3 border-b border-stone-50 group-last:border-none" />
-    </div>
+    </Link>
   );
 }
 
-function DashboardAnnouncementWidget() {
+function DashboardAnnouncementWidget({ announcements }: { announcements: any[] }) {
   return (
     <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-sm">
       <div className="flex items-center justify-between mb-6">
@@ -247,31 +178,15 @@ function DashboardAnnouncementWidget() {
         </span>
       </div>
       <div className="space-y-4">
-        {announcements.map((item) => (
-          <div
-            key={item.id}
-            className="group cursor-pointer"
-          >
-            <div className="flex justify-between items-start mb-1">
-              <h4 className="text-sm font-bold text-stone-800 group-hover:text-amber-500 transition-colors">
-                {item.title}
-              </h4>
-              <span className="text-[10px] font-semibold text-stone-400 uppercase">
-                {item.date}
-              </span>
-            </div>
-            <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">
-              {item.content}
-            </p>
-            <div className="mt-3 border-b border-stone-50 group-last:border-none" />
-          </div>
+        {announcements.map((item: any) => (
+          <DashboardAnnouncementItem key={item.id} announcement={item} />
         ))}
       </div>
     </div>
   );
 }
 
-function DashboardRecentActivityItem({ activity }: { activity: Activity }) {
+function DashboardRecentActivityItem({ activity }: { activity: any }) {
   return (
     <div
       key={activity.id}
@@ -299,13 +214,7 @@ function DashboardRecentActivityItem({ activity }: { activity: Activity }) {
   );
 }
 
-function DashboardRecentActivityWidget() {
-  const { activities, loading } = useAssignmentStore();
-
-  if (loading) {
-    return <div className="p-8 text-stone-500">Loading activities...</div>;
-  }
-
+function DashboardRecentActivityWidget({ activities }: { activities: any[] }) {
   return (
     <div className="bg-white p-6 rounded-3xl border border-stone-100 shadow-sm">
       <div className="flex items-center justify-between mb-6">
@@ -343,8 +252,35 @@ function DashboardRecentActivityWidget() {
   );
 }
 
+function DashboardDeadlineItem({ assignments }: { assignments: any[] }) {
+  // Map store assignments to a structure compatible with the Deadline display
+  const deadlinesFromAssignments = useMemo(() => {
+    if (!Array.isArray(assignments)) return [];
+    return assignments.map(assignment => {
+      let priority: "High" | "Medium" | "Low";
+      switch (assignment.status) {
+        case "Pending":
+          priority = "High";
+          break;
+        case "In Progress":
+          priority = "Medium";
+          break;
+        case "Not Started":
+        case "Submitted": // Submitted assignments can be considered low priority for deadlines overview
+        default:
+          priority = "Low";
+          break;
+      }
+      return {
+        id: assignment.id,
+        title: assignment.title,
+        course: assignment.course,
+        date: assignment.due, // Use 'due' from assignments as 'date' for deadlines
+        priority: priority,
+      };
+    });
+  }, [assignments]);
 
-function DashboardDeadlineItem() {
   return (
     <section className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm sticky top-28">
       <div className="flex items-center justify-between mb-8">
@@ -355,12 +291,14 @@ function DashboardDeadlineItem() {
       </div>
 
       <div className="space-y-6">
-        {deadlines.map((deadline) => (
-          <div
+        {deadlinesFromAssignments.map((deadline) => (
+          <Link
             key={deadline.id}
-            className="flex group cursor-pointer items-start space-x-4"
+            href={`/assignments/${deadline.id}`}
+            className="flex group cursor-pointer items-start space-x-4 transition-colors hover:bg-stone-50 rounded-xl -mx-4 px-4 py-2"
           >
             <div className="flex flex-col items-center">
+              {/* Priority indicator */}
               <div
                 className={`w-3 h-3 rounded-full mt-1.5 ${
                   deadline.priority === "High"
@@ -372,31 +310,39 @@ function DashboardDeadlineItem() {
               />
               <div className="w-0.5 flex-1 bg-stone-100 mt-2 group-last:hidden" />
             </div>
-            <div className="flex-1 pb-6 group-last:pb-0 border-b border-stone-50 group-last:border-none">
+            <div className="flex-1 pb-4 group-last:pb-0 border-b border-stone-50 group-last:border-none">
               <h4 className="text-sm font-bold text-stone-800 group-hover:text-amber-500 transition-colors">
                 {deadline.title}
               </h4>
               <p className="text-xs text-stone-400 mt-1 font-medium">
                 {deadline.course}
               </p>
-              <div className="flex items-center mt-3 text-[11px] font-bold text-stone-500 uppercase tracking-wider">
-                {/* Updated: Mini version of the DeadlineIcon for the timeline */}
-                <DeadlineIcon size={14} />
+              <div className="flex items-center mt-2 text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+                <DueDateIcon size={14} /> {/* Using a more appropriate icon for due dates */}
                 <span className="ml-1.5">{deadline.date}</span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      <button className="w-full mt-8 py-4 bg-amber-500 text-white font-bold rounded-2xl shadow-lg shadow-stone-100 hover:bg-amber-600 hover:-translate-y-0.5 transition-all duration-300">
+      <Link 
+        href="/assignments?sort=due"
+        className="block w-full mt-8 py-4 bg-amber-500 text-white font-bold rounded-2xl shadow-lg shadow-stone-100 hover:bg-amber-600 hover:-translate-y-0.5 transition-all duration-300 text-center"
+      >
         View All Deadlines
-      </button>
+      </Link>
     </section>
   );
 }
 
 export default function DashboardPage() {
+  const { assignments, activities, courses, announcements, loading } = useAssignmentStore();
+
+  if (loading) {
+    return <div className="p-8 text-stone-500">Loading dashboard...</div>;
+  }
+
   return (
     <div className="p-8 max-w-(--breakpoint-2xl) mx-auto space-y-8">
       <div>
@@ -411,16 +357,16 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
         
         <div className="xl:col-span-2 space-y-8">
-          <DashboardCourseOverview />
+          <DashboardCourseOverview courses={courses} />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <DashboardAnnouncementWidget />
-            <DashboardRecentActivityWidget />
+            <DashboardAnnouncementWidget announcements={announcements} />
+            <DashboardRecentActivityWidget activities={activities} />
           </div>
         </div>
 
         <aside className="xl:sticky xl:top-8 h-fit">
-          <DashboardDeadlineItem />
+          <DashboardDeadlineItem assignments={assignments} />
         </aside>
 
       </div>

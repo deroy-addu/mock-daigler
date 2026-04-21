@@ -156,3 +156,20 @@ export const NotificationsIcon = ({ size = 24, className, active = false }: { si
     <path d="M294.4 947.2h-89.6c-7.68 0-12.8-5.12-12.8-12.8V115.2c0-7.68 5.12-12.8 12.8-12.8h89.6c7.68 0 12.8 5.12 12.8 12.8v819.2c0 7.68-5.12 12.8-12.8 12.8z m-76.8-25.6h64V128h-64v793.6z" fill="#231C1C" />
   </svg>
 );
+
+export const ClockIcon = ({ size = 24, className }: { size?: number, className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2.5" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
