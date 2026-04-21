@@ -66,15 +66,22 @@ const Sidebar = () => {
           
           {isActivitiesOpen && (
             <div className="mt-2 space-y-1 px-2">
-              {myActivities.map((activity) => (
-                <Link
-                  key={activity.name}
-                  href={activity.href}
-                  className="block px-4 py-2 text-stone-600 hover:text-[#F9A825] hover:bg-amber-50 rounded-lg transition-all text-sm font-medium"
-                >
-                  {activity.name}
-                </Link>
-              ))}
+              {myActivities.map((activity) => {
+                const isActive = pathname.startsWith(activity.href);
+                return (
+                  <Link
+                    key={activity.name}
+                    href={activity.href}
+                    className={`block px-4 py-2 text-sm rounded-md transition-colors ${
+                      isActive
+                        ? "bg-amber-100 text-amber-700 font-bold"
+                        : "text-stone-600 hover:bg-stone-100"
+                    }`}
+                  >
+                    {activity.name}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

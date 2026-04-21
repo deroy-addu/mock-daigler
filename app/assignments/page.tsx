@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, Suspense } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAssignmentStore } from "@/lib/store";
 import { Assignment } from "@/lib/data";
 
+import { useSearchParams } from "next/navigation";
+import { useAssignmentStore } from "@/lib/store";
+import type { Assignment } from "@/lib/data";
 
 function StatusBadge({ status }: { status: Assignment["status"] }) {
   const styles: Record<Assignment["status"], string> = {
@@ -21,13 +24,13 @@ function StatusBadge({ status }: { status: Assignment["status"] }) {
   );
 }
 
-export default function AssignmentsPage() {
-  const router = useRouter();
+function AssignmentsContent() {
   const { assignments, loading } = useAssignmentStore();
+  const searchParams = useSearchParams();
+  const initialSort = (searchParams.get("sort") as keyof Assignment) || "title";
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [sortBy, setSortBy] = useState<keyof Assignment>("title");
-
+  const [sortBy, setSortBy] = useState<keyof Assignment>(initialSort);
   const statusPriority: Record<string, number> = {
     Submitted: 1,
     "In Progress": 2,
@@ -192,5 +195,13 @@ export default function AssignmentsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AssignmentsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-stone-500">Loading assignments...</div>}>
+      <AssignmentsContent />
+    </Suspense>
   );
 }

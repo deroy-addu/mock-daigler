@@ -11,8 +11,11 @@ export interface Assignment {
   title: string;
   course: string;
   due: string;
-  status: 'Pending' | 'In Progress' | 'Not Started' | 'Submitted';
-  description?: string;
+  status: string;
+  description: string;
+  instructions: string[];
+  points: number;
+  submissionType: string;
   submission?: {
     fileName: string;
     comment: string;
@@ -61,235 +64,130 @@ export const initialAssignments: Assignment[] = [
 export const initialCourses: Course[] = [
   {
     id: 1,
+    title: "React Components Deep Dive",
+    course: "Advanced Web Dev",
+    due: "Tomorrow",
+    status: "Pending",
+    description: "In this assignment, you will dive deep into React's component architecture by building a fully functional multi-step form using advanced component patterns including compound components, render props, and custom hooks.",
+    instructions: [
+      "Create a reusable multi-step form component using the compound component pattern.",
+      "Implement at least three custom hooks: useFormState, useStepNavigation, and useFormValidation.",
+      "Use React Context to share form state across nested components without prop drilling.",
+      "Add animated transitions between steps using CSS transitions or Framer Motion.",
+      "Write unit tests for each custom hook using React Testing Library.",
+      "Document your component API using JSDoc comments and include a usage example in the README.",
+    ],
+    points: 100,
+    submissionType: "ZIP file (source code + README)",
+  },
+  {
+    id: 2,
+    title: "Neural Network Architecture",
+    course: "Machine Learning",
+    due: "In 3 days",
+    status: "In Progress",
+    description: "Explore the foundational architectures of neural networks by implementing a feedforward network from scratch in Python, then comparing its performance against a modern deep learning framework implementation.",
+    instructions: [
+      "Implement a feedforward neural network from scratch using only NumPy — no ML libraries for the core logic.",
+      "Your network must support configurable hidden layers, activation functions (ReLU, Sigmoid, Tanh), and learning rates.",
+      "Train on the MNIST dataset and achieve at least 92% test accuracy.",
+      "Re-implement the same architecture using PyTorch or TensorFlow and compare training curves.",
+      "Write a 2–3 page report analyzing the performance difference, including loss/accuracy graphs.",
+      "Submit a Jupyter notebook with clear markdown explanations for each section.",
+    ],
+    points: 120,
+    submissionType: "Jupyter Notebook (.ipynb) + PDF Report",
+  },
+  {
+    id: 3,
+    title: "Design System Documentation",
+    course: "UI/UX Design",
+    due: "Next Week",
+    status: "Not Started",
+    description: "Design and document a comprehensive design system from first principles. You will establish visual tokens, component specifications, and usage guidelines that could serve as the foundation for a real product.",
+    instructions: [
+      "Define a complete set of design tokens: color palette (with semantic aliases), typography scale, spacing system, border radii, and shadow levels.",
+      "Document at least 10 reusable UI components with variants, states, and accessibility notes.",
+      "Create a component library in Figma (or a tool of your choice) and export design specs.",
+      "Write a contribution guide explaining how future designers should extend the system.",
+      "Include a dark mode specification for each token and component.",
+      "Present your system in a 5-minute recorded walkthrough — upload the video link in your submission.",
+    ],
+    points: 80,
+    submissionType: "Figma link + PDF Documentation + Video link",
+  },
+   {
+    id: 4,
+    title: "Mock Assignment",
+    course: "UI/UX Design",
+    due: "Next Week",
+    status: "Not Started",
+    description: "Design and document a comprehensive design system from first principles. You will establish visual tokens, component specifications, and usage guidelines that could serve as the foundation for a real product.",
+    instructions: [
+      "Define a complete set of design tokens: color palette (with semantic aliases), typography scale, spacing system, border radii, and shadow levels.",
+      "Document at least 10 reusable UI components with variants, states, and accessibility notes.",
+      "Create a component library in Figma (or a tool of your choice) and export design specs.",
+      "Write a contribution guide explaining how future designers should extend the system.",
+      "Include a dark mode specification for each token and component.",
+      "Present your system in a 5-minute recorded walkthrough — upload the video link in your submission.",
+    ],
+    points: 80,
+    submissionType: "Figma link + PDF Documentation + Video link",
+  }
+];
+
+export const initialCourses: Course[] = [
+  {
+    id: 1,
     title: "Advanced Web Development",
-    shortTitle: "Advanced Web Dev",
     instructor: "Dr. Sarah Miller",
-    instructorRole: "Senior Frontend Architect",
-    instructorInitials: "SM",
     progress: 75,
-    thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
+    thumbnail:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=300&q=80",
     color: "bg-blue-500",
-    description:
-      "This course focuses on production-grade frontend architecture using React and Next.js. Students learn how to design scalable UI systems, data-driven interfaces, and maintainable component patterns used in enterprise projects.",
-    objectives: [
-      "Build reusable components with clear API boundaries.",
-      "Design client and server rendering flows in Next.js.",
-      "Apply performance and accessibility best practices in real features.",
-      "Ship a capstone project that mirrors enterprise quality standards.",
-    ],
-    assignmentIds: [1],
-    lessons: [
-      {
-        id: 101,
-        title: "Next.js App Router Deep Dive",
-        module: "Module 1",
-        duration: "32 min",
-        availableUntil: "May 2, 2026",
-        status: "Completed",
-        resourceType: "Video",
-        instructions: "Watch the lecture then summarize key App Router rendering strategies in 3 bullet points.",
-        resources: [
-          { id: "r-101-1", name: "app-router-overview.pdf", type: "PDF Document" },
-          { id: "r-101-2", name: "lecture-slides.pptx", type: "Slides" },
-        ],
-      },
-      {
-        id: 102,
-        title: "Server and Client Component Boundaries",
-        module: "Module 1",
-        duration: "28 min",
-        availableUntil: "May 6, 2026",
-        status: "Completed",
-        resourceType: "Document",
-        instructions: "Review the boundary checklist and identify two components in your current project that should become server components.",
-        resources: [
-          { id: "r-102-1", name: "component-boundary-checklist.pdf", type: "PDF Document" },
-          { id: "r-102-2", name: "server-client-examples.zip", type: "ZIP Archive" },
-        ],
-      },
-      {
-        id: 103,
-        title: "Advanced State Patterns",
-        module: "Module 2",
-        duration: "40 min",
-        availableUntil: "May 10, 2026",
-        status: "In Progress",
-        resourceType: "Lab",
-        instructions: "Implement a reducer-driven form module and document why you selected each state transition.",
-        resources: [
-          { id: "r-103-1", name: "state-patterns-lab.md", type: "Markdown Guide" },
-          { id: "r-103-2", name: "starter-code.zip", type: "ZIP Archive" },
-        ],
-      },
-      {
-        id: 104,
-        title: "Routing and Data Fetching Quiz",
-        module: "Module 2",
-        duration: "15 min",
-        availableUntil: "May 12, 2026",
-        status: "Pending",
-        resourceType: "Quiz",
-        instructions: "Complete the timed quiz and upload a screenshot of your result summary to the activity thread.",
-        resources: [
-          { id: "r-104-1", name: "quiz-guidelines.pdf", type: "PDF Document" },
-        ],
-      },
-    ],
   },
   {
     id: 2,
     title: "Machine Learning Basics",
-    shortTitle: "Machine Learning",
     instructor: "Prof. Alan Turing",
-    instructorRole: "Machine Learning Professor",
-    instructorInitials: "AT",
     progress: 40,
-    thumbnail: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=900&q=80",
-    color: "bg-emerald-500",
-    description:
-      "Students learn core machine learning concepts such as supervised learning, optimization, and model evaluation. The class balances conceptual understanding and implementation by combining mathematics with practical coding tasks.",
-    objectives: [
-      "Understand core ML problem types and workflows.",
-      "Implement baseline models and evaluate results.",
-      "Interpret learning curves and error metrics.",
-      "Communicate model behavior and trade-offs.",
-    ],
-    assignmentIds: [2],
-    lessons: [
-      {
-        id: 201,
-        title: "Linear Regression Foundations",
-        module: "Module 1",
-        duration: "35 min",
-        availableUntil: "May 3, 2026",
-        status: "Completed",
-        resourceType: "Video",
-        instructions: "Review the derivation notes and solve the provided gradient descent warm-up problems.",
-        resources: [
-          { id: "r-201-1", name: "regression-notes.pdf", type: "PDF Document" },
-          { id: "r-201-2", name: "warmup-problems.docx", type: "DOCX Worksheet" },
-        ],
-      },
-      {
-        id: 202,
-        title: "Gradient Descent Intuition",
-        module: "Module 1",
-        duration: "24 min",
-        availableUntil: "May 7, 2026",
-        status: "In Progress",
-        resourceType: "Video",
-        instructions: "Run the notebook and record how learning rate changes affect convergence after 200 epochs.",
-        resources: [
-          { id: "r-202-1", name: "gradient-descent-notebook.ipynb", type: "Jupyter Notebook" },
-          { id: "r-202-2", name: "learning-rate-lab.pdf", type: "PDF Document" },
-        ],
-      },
-      {
-        id: 203,
-        title: "Classification Metrics Explained",
-        module: "Module 2",
-        duration: "18 min",
-        availableUntil: "May 9, 2026",
-        status: "Pending",
-        resourceType: "Document",
-        instructions: "Create a confusion matrix from the sample dataset and explain precision and recall in your own words.",
-        resources: [
-          { id: "r-203-1", name: "metrics-reference.pdf", type: "PDF Document" },
-          { id: "r-203-2", name: "sample-dataset.csv", type: "CSV File" },
-        ],
-      },
-      {
-        id: 204,
-        title: "Model Evaluation Checkpoint",
-        module: "Module 2",
-        duration: "20 min",
-        availableUntil: "May 13, 2026",
-        status: "Pending",
-        resourceType: "Quiz",
-        instructions: "Take the checkpoint quiz and post one model evaluation insight in the course discussion board.",
-        resources: [
-          { id: "r-204-1", name: "checkpoint-instructions.pdf", type: "PDF Document" },
-        ],
-      },
-    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=300&q=80",
+    color: "bg-purple-500",
   },
   {
     id: 3,
     title: "UI/UX Design Systems",
-    shortTitle: "UI/UX Design",
     instructor: "Jane Cooper",
-    instructorRole: "Product Design Lead",
-    instructorInitials: "JC",
     progress: 90,
-    thumbnail: "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=900&q=80",
-    color: "bg-amber-500",
-    description:
-      "This course covers end-to-end design system creation, from token architecture to component governance. Learners define reusable visual foundations and translate them into cross-functional product guidelines.",
-    objectives: [
-      "Create token systems for color, typography, and spacing.",
-      "Define scalable component guidelines and states.",
-      "Establish documentation patterns for teams.",
-      "Align accessibility standards with visual language.",
-    ],
-    assignmentIds: [3],
-    lessons: [
-      {
-        id: 301,
-        title: "Design Tokens and Semantic Layers",
-        module: "Module 1",
-        duration: "31 min",
-        availableUntil: "May 4, 2026",
-        status: "Completed",
-        resourceType: "Video",
-        instructions: "Audit your current color palette and convert it into semantic tokens based on intent.",
-        resources: [
-          { id: "r-301-1", name: "token-audit-template.fig", type: "Figma File" },
-          { id: "r-301-2", name: "semantic-token-guide.pdf", type: "PDF Document" },
-        ],
-      },
-      {
-        id: 302,
-        title: "Component Anatomy and States",
-        module: "Module 1",
-        duration: "26 min",
-        availableUntil: "May 8, 2026",
-        status: "Completed",
-        resourceType: "Document",
-        instructions: "Map default, hover, active, and disabled states for five core components from your design system.",
-        resources: [
-          { id: "r-302-1", name: "component-state-matrix.pdf", type: "PDF Document" },
-          { id: "r-302-2", name: "design-system-library.fig", type: "Figma File" },
-        ],
-      },
-      {
-        id: 303,
-        title: "Accessibility in Systems",
-        module: "Module 2",
-        duration: "22 min",
-        availableUntil: "May 11, 2026",
-        status: "Completed",
-        resourceType: "Lab",
-        instructions: "Run an accessibility check on three key screens and submit your remediation list.",
-        resources: [
-          { id: "r-303-1", name: "a11y-checklist.pdf", type: "PDF Document" },
-          { id: "r-303-2", name: "audit-report-template.docx", type: "DOCX Template" },
-        ],
-      },
-      {
-        id: 304,
-        title: "Governance and Handoff Review",
-        module: "Module 2",
-        duration: "19 min",
-        availableUntil: "May 15, 2026",
-        status: "Pending",
-        resourceType: "Quiz",
-        instructions: "Review governance scenarios and choose the correct ownership path for each handoff situation.",
-        resources: [
-          { id: "r-304-1", name: "governance-scenarios.pdf", type: "PDF Document" },
-        ],
-      },
-    ],
+    thumbnail:
+      "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=300&q=80",
+    color: "bg-pink-500",
   },
+];
+
+export const initialAnnouncements: Announcement[] = [
+  {
+    id: 1,
+    title: "Exam Schedule Released",
+    date: "April 5, 2026",
+    author: "Academic Office",
+    content: "The official examination schedule for the Spring 2026 semester has been finalized. Students are advised to log into their portals and check the 'Upcoming Exams' tab. Please ensure you arrive at the designated halls at least 30 minutes before the start time. Any conflicts in the schedule must be reported to the Academic Office by the end of this week.",
+  },
+  {
+    id: 2,
+    title: "Library Opening Hours",
+    date: "April 2, 2026",
+    author: "Library Services",
+    content: "To support students during the final exam period, the Main Library will transition to 24/7 operations starting next Monday. Study pods and silent zones will be available on a first-come, first-served basis. Please remember to bring your student ID for entry after 10:00 PM. High-speed Wi-Fi and printing services will remain active throughout the night.",
+  },
+  {
+    id: 3,
+    title: "Mock Announcement",
+    date: "April 21, 2026",
+    author: "Department of Mock Affairs",
+    content: "Random Description.",
+  }
 ];
 
 export const initialActivities: Activity[] = [
