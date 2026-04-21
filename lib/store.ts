@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Assignment, initialAssignments, Activity, initialActivities } from "./data";
+import { initialAssignments, initialActivities } from "./data";
 
 export function useAssignmentStore() {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -30,14 +30,14 @@ export function useAssignmentStore() {
   }, []);
 
   const updateAssignment = (id: number, updates: Partial<Assignment>) => {
-    const updated = assignments.map(a => 
-      a.id === id ? { ...a, ...updates } : a
+    const updated = assignments.map((a) =>
+      a.id === id ? { ...a, ...updates } : a,
     );
     setAssignments(updated);
     localStorage.setItem("assignments", JSON.stringify(updated));
   };
 
-  const addActivity = (activity: Omit<Activity, 'id'>) => {
+  const addActivity = (activity: Omit<Activity, "id">) => {
     const newActivity = {
       ...activity,
       id: Date.now(),
@@ -48,33 +48,35 @@ export function useAssignmentStore() {
   };
 
   const removeActivityByTitle = (title: string) => {
-    const updated = activities.filter(act => act.title !== title);
+    const updated = activities.filter((act) => act.title !== title);
     setActivities(updated);
     localStorage.setItem("activities", JSON.stringify(updated));
   };
 
-  const submitAssignment = (id: number, submission: { fileName: string; comment: string }) => {
-    const assignment = assignments.find(a => a.id === id);
+  const submitAssignment = (
+    id: number,
+    submission: { fileName: string; comment: string },
+  ) => {
+    const assignment = assignments.find((a) => a.id === id);
     if (!assignment) return;
 
     updateAssignment(id, {
       status: "Submitted",
       submission: {
         ...submission,
-        submittedAt: new Date().toISOString()
-      }
+        submittedAt: new Date().toISOString(),
+      },
     });
 
-    // Remove old submission activity if it exists (for edits)
     const title = `Submitted: ${assignment.title}`;
-    const filteredActivities = activities.filter(act => act.title !== title);
-    
+    const filteredActivities = activities.filter((act) => act.title !== title);
+
     const newActivity: Activity = {
       id: Date.now(),
-      type: 'submission',
+      type: "submission",
       title: title,
       time: "Just now",
-      detail: `File: ${submission.fileName}`
+      detail: `File: ${submission.fileName}`,
     };
 
     const finalActivities = [newActivity, ...filteredActivities];
@@ -83,16 +85,23 @@ export function useAssignmentStore() {
   };
 
   const removeSubmission = (id: number) => {
-    const assignment = assignments.find(a => a.id === id);
+    const assignment = assignments.find((a) => a.id === id);
     if (!assignment) return;
 
     updateAssignment(id, {
       status: "Pending",
-      submission: undefined
+      submission: undefined,
     });
 
     removeActivityByTitle(`Submitted: ${assignment.title}`);
   };
 
-  return { assignments, activities, loading, updateAssignment, submitAssignment, removeSubmission };
+  return {
+    assignments,
+    activities,
+    loading,
+    updateAssignment,
+    submitAssignment,
+    removeSubmission,
+  };
 }
