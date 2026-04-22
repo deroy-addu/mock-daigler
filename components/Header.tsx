@@ -20,13 +20,22 @@ export default function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (storedUser) {
-      setUser({
-        fullName: storedUser.fullName || "Guest",
-        studentId: storedUser.studentId || "230612"
-      });
-    }
+    const syncUserFromStorage = () => {
+      const storedUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+      if (storedUser) {
+        setUser({
+          fullName: storedUser.fullName || "Guest",
+          studentId: storedUser.studentId || "230612"
+        });
+      }
+    };
+
+    syncUserFromStorage();
+    window.addEventListener("userUpdated", syncUserFromStorage);
+
+    return () => {
+      window.removeEventListener("userUpdated", syncUserFromStorage);
+    };
   }, []);
 
   const handleLogout = () => {

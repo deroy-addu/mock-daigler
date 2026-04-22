@@ -339,10 +339,19 @@ export default function DashboardPage() {
   const [firstName, setFirstName] = useState("Student");
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (user?.fullName) {
-      setFirstName(user.fullName.split(" ")[0]);
-    }
+    const syncDashboardName = () => {
+      const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+      if (user?.fullName) {
+        setFirstName(user.fullName.split(" ")[0]);
+      }
+    };
+
+    syncDashboardName();
+    window.addEventListener("userUpdated", syncDashboardName);
+
+    return () => {
+      window.removeEventListener("userUpdated", syncDashboardName);
+    };
   }, []);
   const { assignments, activities, courses, announcements, loading } = useAssignmentStore();
 

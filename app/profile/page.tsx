@@ -69,9 +69,9 @@ export default function ProfilePage() {
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-bold text-stone-900">User details</h2>
-              <button className="text-amber-600 text-sm hover:underline">
+              <Link href="/profile/edit" className="text-amber-600 text-sm hover:underline">
                 Edit profile
-              </button>
+              </Link>
             </div>
             <div className="space-y-4 text-sm">
               <div>
@@ -87,9 +87,9 @@ export default function ProfilePage() {
 
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
             <h2 className="font-bold text-stone-900 mb-4">Privacy and policies</h2>
-            <p className="text-amber-600 text-sm hover:underline cursor-pointer">
+            <Link href="/profile/privacy-policy" className="text-amber-600 text-sm hover:underline cursor-pointer">
               Data Retention Summary
-            </p>
+            </Link>
           </section>
         </div>
 
