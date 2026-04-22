@@ -45,7 +45,7 @@ export default function Sidebar() {
   return (
     <aside className="w-64 min-h-screen bg-[#FDFBF7] border-r border-stone-200 flex flex-col sticky top-0 shadow-sm">
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-amber-500">mock-daigler</h1>
+        <h1 className="text-2xl font-bold text-amber-500">Brainwave</h1>
       </div>
 
       <nav className="flex-1 px-4 space-y-1">
@@ -117,7 +117,7 @@ export default function Sidebar() {
 
       <div className="p-4 border-t border-stone-100">
         <p className="text-xs text-stone-400 text-center">
-          © 2026 mock-daigler
+          © 2026 Brainwave
         </p>
       </div>
     </aside>

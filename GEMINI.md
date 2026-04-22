@@ -1,8 +1,8 @@
-# Project: mock-daigler
+# Project: Brainwave
 
 ## Overview
 
-`mock-daigler` is a modern web application built using **Next.js 16** and **React 19**. It leverages the Next.js **App Router** architecture for its routing and layout system.
+`Brainwave` is a modern web application built using **Next.js 16** and **React 19**. It leverages the Next.js **App Router** architecture for its routing and layout system.
 
 ### Main Technologies
 

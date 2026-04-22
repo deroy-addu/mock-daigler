@@ -9,7 +9,7 @@ import SearchSVG from "@/assets/search.svg";
 import UploadSVG from "@/assets/upload.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect  } from "react";
 import { useAssignmentStore } from "@/lib/store";
 import { AnnouncementsIcon } from "@/components/Icons";
 import { ActivityIcon } from "@/components/Icons";
@@ -337,6 +337,14 @@ function DashboardDeadlineItem({ assignments }: { assignments: any[] }) {
 }
 
 export default function DashboardPage() {
+  const [firstName, setFirstName] = useState("Student");
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    if (user?.fullName) {
+      setFirstName(user.fullName.split(" ")[0]);
+    }
+  }, []);
   const { assignments, activities, courses, announcements, loading } = useAssignmentStore();
 
   if (loading) {
@@ -347,7 +355,7 @@ export default function DashboardPage() {
     <div className="p-8 max-w-(--breakpoint-2xl) mx-auto space-y-8">
       <div>
         <h2 className="text-3xl font-bold text-stone-900 tracking-tight">
-          Welcome back, Lebron!
+          Welcome back, {firstName}!
         </h2>
         <p className="text-stone-500 mt-1">
           Here&apos;s what&apos;s happening with your courses today.
