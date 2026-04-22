@@ -1,26 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-const courses = [
-  {
-    id: 1,
-    title: "Advanced Web Development",
-    instructor: "Dr. Sarah Miller",
-  },
-  {
-    id: 2,
-    title: "Machine Learning Basics",
-    instructor: "Prof. Alan Turing",
-  },
-  {
-    id: 3,
-    title: "UI/UX Design Systems",
-    instructor: "Jane Cooper",
-  },
-];
+import Link from "next/link";
+import { useAssignmentStore } from "@/lib/store";
 
 export default function ProfilePage() {
+  const { courses } = useAssignmentStore();
+  
   const [user, setUser] = useState({
     fullName: "Guest",
     email: "guest@example.com",
@@ -99,7 +85,6 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          {/* Privacy and Policies */}
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
             <h2 className="font-bold text-stone-900 mb-4">Privacy and policies</h2>
             <p className="text-amber-600 text-sm hover:underline cursor-pointer">
@@ -109,23 +94,28 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-8">
-          {/* Course Details */}
+          {/* Course Details Section - Redirects to /course/[id] */}
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
             <h2 className="font-bold text-stone-900 mb-4">Course details</h2>
             <div className="space-y-3">
               <p className="text-sm font-semibold text-stone-900">Course profiles</p>
-              {courses.map((course, i) => (
-                <p
-                  key={i}
-                  className="text-sm text-amber-600 hover:underline cursor-pointer"
-                >
-                  {course.title} - {course.instructor}
-                </p>
-              ))}
+              {courses.length > 0 ? (
+                courses.map((course) => (
+                  <Link
+                    key={course.id}
+                    // Updated to redirect to the specific course detail page
+                    href={`/course/${course.id}`} 
+                    className="block text-sm text-amber-600 hover:underline cursor-pointer"
+                  >
+                    {course.title} - {course.instructor}
+                  </Link>
+                ))
+              ) : (
+                <p className="text-xs text-stone-400">No active courses found.</p>
+              )}
             </div>
           </section>
 
-          {/* Miscellaneous */}
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
             <h2 className="font-bold text-stone-900 mb-4">Miscellaneous</h2>
             <div className="space-y-2 text-sm text-amber-600">
@@ -137,7 +127,6 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-8">
-          {/* Login Activity */}
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
             <h2 className="font-bold text-stone-900 mb-4">Login activity</h2>
             <div className="space-y-4 text-sm">
@@ -156,7 +145,6 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          {/* Mobile App */}
           <section className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col items-center text-center">
             <h2 className="font-bold text-stone-900 mb-4 self-start">Mobile app</h2>
             <div className="bg-stone-100 p-4 rounded-lg mb-4">
