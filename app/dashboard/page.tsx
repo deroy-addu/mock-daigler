@@ -14,12 +14,11 @@ import { useAssignmentStore } from "@/lib/store";
 import { AnnouncementsIcon } from "@/components/Icons";
 import { ActivityIcon } from "@/components/Icons";
 import { DeadlineIcon, ClockIcon as DueDateIcon } from "@/components/Icons";
-import { initialCourses as courses } from "@/lib/data";
 
 function DashboardCourseItem({ course }: { course: any }) {
   return (
-    <div
-      key={course.id}
+    <Link
+      href={`/course/${course.id}`}
       className="min-w-[320px] bg-white rounded-3xl border border-stone-100 shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group cursor-pointer overflow-hidden"
     >
       <div className="h-40 overflow-hidden relative">
@@ -56,7 +55,7 @@ function DashboardCourseItem({ course }: { course: any }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

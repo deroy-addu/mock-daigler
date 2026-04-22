@@ -16,13 +16,27 @@ export type Assignment = {
   };
 };
 
+export type Lesson = {
+  id: number;
+  module: string;
+  title: string;
+  resourceType: string;
+  duration: string;
+  status: string;
+};
+
 export type Course = {
   id: number;
   title: string;
   instructor: string;
+  instructorRole: string;
+  instructorInitials: string;
   progress: number;
   thumbnail: string;
   color: string;
+  description: string;
+  objectives: string[];
+  lessons: Lesson[];
 };
 
 export type Announcement = {
@@ -121,28 +135,64 @@ export const initialCourses: Course[] = [
     id: 1,
     title: "Advanced Web Development",
     instructor: "Dr. Sarah Miller",
+    instructorRole: "Lead Web Architect",
+    instructorInitials: "SM",
     progress: 75,
     thumbnail:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=300&q=80",
     color: "bg-blue-500",
+    description: "Deep dive into modern web architectures, focusing on performance, scalability, and developer experience.",
+    objectives: [
+      "Master React 19 features",
+      "Build scalable Next.js applications",
+      "Implement advanced state management"
+    ],
+    lessons: [
+      { id: 1, module: "Module 1", title: "Introduction to React 19", resourceType: "Video", duration: "12m", status: "Completed" },
+      { id: 2, module: "Module 1", title: "Server Components vs Client Components", resourceType: "Reading", duration: "20m", status: "In Progress" }
+    ]
   },
   {
     id: 2,
     title: "Machine Learning Basics",
     instructor: "Prof. Alan Turing",
+    instructorRole: "AI Research Lead",
+    instructorInitials: "AT",
     progress: 40,
     thumbnail:
       "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=300&q=80",
     color: "bg-purple-500",
+    description: "Learn the fundamentals of machine learning, from linear regression to neural networks.",
+    objectives: [
+      "Understand supervised vs unsupervised learning",
+      "Build and train a simple neural network",
+      "Evaluate model accuracy and loss"
+    ],
+    lessons: [
+      { id: 3, module: "Unit 1", title: "Linear Algebra Fundamentals", resourceType: "Video", duration: "45m", status: "Completed" },
+      { id: 4, module: "Unit 1", title: "Calculus for Deep Learning", resourceType: "Quiz", duration: "15m", status: "Not Started" }
+    ]
   },
   {
     id: 3,
     title: "UI/UX Design Systems",
     instructor: "Jane Cooper",
+    instructorRole: "Senior Product Designer",
+    instructorInitials: "JC",
     progress: 90,
     thumbnail:
       "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?auto=format&fit=crop&w=300&q=80",
     color: "bg-pink-500",
+    description: "Create robust, scalable design systems that bridge the gap between design and engineering.",
+    objectives: [
+      "Design accessible component libraries",
+      "Establish a consistent visual language",
+      "Master design tokens and documentation"
+    ],
+    lessons: [
+      { id: 5, module: "Phase 1", title: "Defining Design Tokens", resourceType: "Reading", duration: "30m", status: "Completed" },
+      { id: 6, module: "Phase 2", title: "Building a Button System", resourceType: "Video", duration: "25m", status: "Completed" }
+    ]
   },
 ];
 
